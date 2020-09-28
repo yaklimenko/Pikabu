@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="story"
+            type="home.at.yaklimenko.pikabu.entity.Story" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        app:cardElevation="@dimen/story_card_elevation"
+        android:background="@color/cardBackground">
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/text_size_title"
+            android:text="@{story.title}"
+
+            />
+
+        <ImageView
+            android:id="@+id/img_first_story_img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:contentDescription="@{story.title}"
+            app:profileImage="@{story.images == null || story.images.isEmpty() ? null : story.images.get(0)}" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_body"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{story.body}" />
+
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
