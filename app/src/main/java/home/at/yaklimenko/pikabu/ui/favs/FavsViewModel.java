@@ -1,19 +1,31 @@
 package home.at.yaklimenko.pikabu.ui.favs;
 
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-public class FavsViewModel extends ViewModel {
+import java.util.List;
 
-    private MutableLiveData<String> mText;
+import home.at.yaklimenko.pikabu.entity.Story;
+import home.at.yaklimenko.pikabu.favs.FavStoriesStorage;
+import home.at.yaklimenko.pikabu.ui.common.StorySaverViewModel;
+
+public class FavsViewModel extends ViewModel implements StorySaverViewModel {
+
+    public MutableLiveData<List<Story>> stories = new MutableLiveData<>();
 
     public FavsViewModel() {
-        mText = new MutableLiveData<>();
-        mText.setValue("This is dashboard fragment");
+        stories.setValue(FavStoriesStorage.getInstance().getSavedStories());
     }
 
-    public LiveData<String> getText() {
-        return mText;
+
+    @Override
+    public void saveStory(Story story) {
+        FavStoriesStorage.getInstance().saveStory(story);
+    }
+
+    @Override
+    public void removeStory(int id) {
+        //story.setFav(false);
+        FavStoriesStorage.getInstance().removeFromSavedStories(id);
     }
 }

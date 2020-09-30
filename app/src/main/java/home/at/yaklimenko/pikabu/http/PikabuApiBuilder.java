@@ -10,11 +10,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class PikabuApiBuilder {
+    private static final String TAG = PikabuApiBuilder.class.getSimpleName();
 
     private final PikabuApi service;
     public static PikabuApiBuilder instance;
 
-    public static PikabuApiBuilder getInstance() {
+    public static synchronized PikabuApiBuilder getInstance() {
         if (instance == null) {
             instance = new PikabuApiBuilder();
         }

@@ -5,6 +5,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 abstract class DefaultCallback<T> implements Callback<T> {
+    private static final String TAG = DefaultCallback.class.getSimpleName();
 
     @Override
     public void onResponse(Call<T> call, Response<T> response) {

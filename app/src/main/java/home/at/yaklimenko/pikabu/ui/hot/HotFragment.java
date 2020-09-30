@@ -13,12 +13,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import home.at.yaklimenko.pikabu.R;
 import home.at.yaklimenko.pikabu.databinding.FragmentHotBinding;
-import home.at.yaklimenko.pikabu.ui.favs.StoryListAdapter;
+import home.at.yaklimenko.pikabu.ui.common.StoryListAdapter;
 
 public class HotFragment extends Fragment {
 
     private HotViewModel hotViewModel;
-    private StoryListAdapter storyListAdapter = new StoryListAdapter();
+    private StoryListAdapter storyListAdapter;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -26,6 +26,7 @@ public class HotFragment extends Fragment {
         hotViewModel = new ViewModelProvider(this).get(HotViewModel.class);
         FragmentHotBinding binding;
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_hot, container, false);
+        storyListAdapter = new StoryListAdapter(hotViewModel);
         binding.listStories.setAdapter(storyListAdapter);
         binding.listStories.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.setViewModel(hotViewModel);

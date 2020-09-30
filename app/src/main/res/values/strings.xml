@@ -2,4 +2,7 @@
     <string name="app_name">Pikabu</string>
     <string name="title_home">Home</string>
     <string name="title_favs">Favs</string>
+    <string name="btn_add_to_favs">Add to Favs</string>
+    <string name="btn_remove_from_favs">Remove from Favs</string>
+    <string name="tv_error_title">Sorry, cannot load stories for now :(</string>
 </resources>
