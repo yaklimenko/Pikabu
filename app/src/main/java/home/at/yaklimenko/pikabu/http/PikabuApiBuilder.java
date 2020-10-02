@@ -12,15 +12,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class PikabuApiBuilder {
     private static final String TAG = PikabuApiBuilder.class.getSimpleName();
 
-    private final PikabuApi service;
-    public static PikabuApiBuilder instance;
-
-    public static synchronized PikabuApiBuilder getInstance() {
-        if (instance == null) {
-            instance = new PikabuApiBuilder();
-        }
-        return instance;
-    }
+    private final PikabuApi pikabuApi;
 
     public PikabuApiBuilder() {
         Retrofit retrofit = new Retrofit.Builder()
@@ -29,12 +21,12 @@ public class PikabuApiBuilder {
                 .baseUrl("https://pikabu.ru/page/interview/mobile-app/test-api/")
                 .build();
 
-        service = retrofit.create(PikabuApi.class);
+        pikabuApi = retrofit.create(PikabuApi.class);
     }
 
     public Single<List<Story>> loadHotStories() {
         return Single.create(emitter ->
-                service.loadHotStories()
+                pikabuApi.loadHotStories()
                         .enqueue(new DefaultCallback<List<Story>>() {
                             @Override
                             protected void onResponse(ResultEntity<List<Story>> result) {
@@ -49,7 +41,7 @@ public class PikabuApiBuilder {
 
     public Single<Story> loadStory(int id) {
         return Single.create(emitter ->
-                service
+                pikabuApi
                         .loadStory(id)
                         .enqueue(new DefaultCallback<Story>() {
                             @Override

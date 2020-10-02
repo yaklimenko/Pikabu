@@ -7,11 +7,6 @@
         <variable
             name="story"
             type="home.at.yaklimenko.pikabu.entity.Story" />
-
-        <variable
-            name="viewModel"
-            type="home.at.yaklimenko.pikabu.ui.common.StorySaverViewModel" />
-
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -69,12 +64,12 @@
                 android:layout_height="wrap_content">
 
                 <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_save_to_favs"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:text="@string/btn_add_to_favs"
-                    android:onClick="@{viewModel.removeStory(1)}"
+                    android:text="@{story.isFav ? @string/btn_remove_from_favs : @string/btn_add_to_favs"
                     app:iconGravity="end">
 
                 </com.google.android.material.button.MaterialButton>

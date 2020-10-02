@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import home.at.yaklimenko.pikabu.R;
 import home.at.yaklimenko.pikabu.databinding.FragmentHotBinding;
-import home.at.yaklimenko.pikabu.ui.common.StoryListAdapter;
+import home.at.yaklimenko.pikabu.ui.stories.StoryListAdapter;
 
 public class HotFragment extends Fragment {
 
@@ -26,10 +26,12 @@ public class HotFragment extends Fragment {
         hotViewModel = new ViewModelProvider(this).get(HotViewModel.class);
         FragmentHotBinding binding;
         binding = DataBindingUtil.inflate(LayoutInflater.from(getContext()), R.layout.fragment_hot, container, false);
-        storyListAdapter = new StoryListAdapter(hotViewModel);
+        storyListAdapter = new StoryListAdapter((storyId, position) -> hotViewModel.switchStoryFavor(storyId)
+                .subscribe(() -> storyListAdapter.notifyItemChanged(position)));
         binding.listStories.setAdapter(storyListAdapter);
         binding.listStories.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.setViewModel(hotViewModel);
+        binding.executePendingBindings();
 
         hotViewModel.getStories().observe(getViewLifecycleOwner(), stories -> storyListAdapter.setData(stories));
         return binding.getRoot();

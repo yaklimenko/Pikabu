@@ -1,39 +1,39 @@
 package home.at.yaklimenko.pikabu.favs;
 
-import java.util.LinkedHashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import home.at.yaklimenko.pikabu.entity.Story;
+import io.reactivex.Completable;
+import io.reactivex.Single;
 
 public class FavStoriesStorage {
-    private static FavStoriesStorage instance;
-
-    private Map<Integer, Story> stories;
-
-    public static synchronized FavStoriesStorage getInstance() {
-        if (instance == null) {
-            instance = new FavStoriesStorage();
-            return instance;
-        }
-        return instance;
-    }
+    private final Set<Story> stories;
 
     public FavStoriesStorage() {
-        stories = new LinkedHashMap<>();
+        stories = new HashSet<>();
     }
 
-    public void saveStory(Story story) {
-        stories.put(story.getId(), story);
+    public Completable saveStory(Story story) {
+        return Completable.create(emitter -> {
+            stories.add(story);
+            emitter.onComplete();
+        });
     }
 
-    public void removeFromSavedStories(int id) {
-        stories.remove(id);
+    public Completable removeFromSavedStories(Story story) {
+        return Completable.create(emitter -> {
+            stories.remove(story);
+            emitter.onComplete();
+        });
     }
 
-    public List<Story> getSavedStories() {
-        return new LinkedList<>(stories.values());
+    public Single<List<Story>> loadFavsStories() {
+        return Single.create(emitter -> {
+            emitter.onSuccess(new LinkedList<>(stories));
+        });
     }
 
 }

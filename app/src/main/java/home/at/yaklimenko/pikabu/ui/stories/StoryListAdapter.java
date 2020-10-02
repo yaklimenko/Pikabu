@@ -1,7 +1,8 @@
-package home.at.yaklimenko.pikabu.ui.common;
+package home.at.yaklimenko.pikabu.ui.stories;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
@@ -24,10 +25,10 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
 
 
     private List<Story> data = new LinkedList<>();
-    private StorySaverViewModel storySaverViewModel;
+    private OnStoryClickListener onStoryClickListener;
 
-    public StoryListAdapter(StorySaverViewModel storySaverViewModel) {
-        this.storySaverViewModel = storySaverViewModel;
+    public StoryListAdapter(OnStoryClickListener onStoryClickListener) {
+        this.onStoryClickListener = onStoryClickListener;
     }
 
     @NonNull
@@ -35,14 +36,14 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ListItemStoryBinding binding = ListItemStoryBinding.inflate(inflater, parent, false);
-        return new ViewHolder(binding, storySaverViewModel);
-
+        return new ViewHolder(binding, onStoryClickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Log.d(TAG, "onBindViewHolder: binded " + data.get(position).getTitle());
         holder.bind(data.get(position));
+        holder.savePosition(position);
     }
 
     @Override
@@ -57,34 +58,48 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        private ListItemStoryBinding binding;
-        private StorySaverViewModel storySaverViewModel;
+        private ListItemStoryBinding storyBinding;
+        private OnStoryClickListener onStoryClickListener;
 
-        ViewHolder(ListItemStoryBinding binding, StorySaverViewModel storySaverViewModel) {
+        ViewHolder(ListItemStoryBinding binding, OnStoryClickListener onStoryClickListener) {
             super(binding.getRoot());
-            ViewHolder.this.binding = binding;
+            storyBinding = binding;
+            this.onStoryClickListener = onStoryClickListener;
             initCardHandler(binding);
         }
 
         private void initCardHandler(home.at.yaklimenko.pikabu.databinding.ListItemStoryBinding binding) {
             MaterialCardView card = binding.storyItemCard;
-            card.setOnLongClickListener(v -> {
-                card.setChecked(!card.isChecked());
-                return true;
-            });
+//            card.setOnLongClickListener(v -> {
+//                card.setChecked(!card.isChecked());
+//                return true;
+//            });
+        }
+
+        void savePosition(int position) {
+            storyBinding.getRoot().setTag(position);
         }
 
         void bind(Story story) {
-            binding.setStory(story);
-            binding.setViewModel(storySaverViewModel);
+            storyBinding.setStory(story);
+            storyBinding.btnSaveToFavs.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    onStoryClickListener.onStoryClicked(story.getId(), (int) itemView.getTag());
+                }
+            });
         }
     }
 
     @BindingAdapter("storyImage")
     public static void loadFirstImage(ImageView view, String imageUrl) {
-        if (imageUrl == null) {
+        if (imageUrl == null || imageUrl.isEmpty()) {
+            view.setVisibility(View.GONE);
+            Glide.with(view.getContext())
+                    .clear(view);
             return;
         }
+        view.setVisibility(View.VISIBLE);
         Glide.with(view.getContext())
                 .load(imageUrl).apply(new RequestOptions())
                 .into(view);
