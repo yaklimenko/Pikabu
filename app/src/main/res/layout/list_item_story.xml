@@ -15,7 +15,6 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:focusable="true"
-        android:checkable="true"
         app:checkedIcon="@drawable/ic_baseline_favorite_24"
         app:cardElevation="@dimen/story_card_elevation"
         android:layout_margin="@dimen/half_margin"

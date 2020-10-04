@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.material.card.MaterialCardView;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -26,10 +25,12 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
 
 
     private List<Story> data = new LinkedList<>();
+    private OnButtonClickListener onButtonClickListener;
     private OnStoryClickListener onStoryClickListener;
 
-    public StoryListAdapter(OnStoryClickListener onStoryClickListener) {
+    public StoryListAdapter(OnButtonClickListener onButtonClickListener, OnStoryClickListener onStoryClickListener) {
         Log.d(TAG, "StoryListAdapter: constructor");
+        this.onButtonClickListener = onButtonClickListener;
         this.onStoryClickListener = onStoryClickListener;
     }
 
@@ -38,7 +39,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         ListItemStoryBinding binding = ListItemStoryBinding.inflate(inflater, parent, false);
-        return new ViewHolder(binding, onStoryClickListener);
+        return new ViewHolder(binding, onButtonClickListener, onStoryClickListener);
     }
 
     @Override
@@ -61,11 +62,13 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         private ListItemStoryBinding storyBinding;
+        private OnButtonClickListener onButtonClickListener;
         private OnStoryClickListener onStoryClickListener;
 
-        ViewHolder(ListItemStoryBinding binding, OnStoryClickListener onStoryClickListener) {
+        ViewHolder(ListItemStoryBinding binding, OnButtonClickListener onButtonClickListener, OnStoryClickListener onStoryClickListener) {
             super(binding.getRoot());
             storyBinding = binding;
+            this.onButtonClickListener = onButtonClickListener;
             this.onStoryClickListener = onStoryClickListener;
         }
 
@@ -75,8 +78,9 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
 
         void bind(Story story) {
             storyBinding.setStory(story);
+            storyBinding.storyItemCard.setOnClickListener(v -> onStoryClickListener.onStoryClicked(story.getId()));
             storyBinding.btnSaveToFavs.setText(story.isFav() ? R.string.btn_remove_from_favs : R.string.btn_add_to_favs);
-            storyBinding.btnSaveToFavs.setOnClickListener(v -> onStoryClickListener.onStoryClicked(story.getId(), storyBinding.btnSaveToFavs));
+            storyBinding.btnSaveToFavs.setOnClickListener(v -> onButtonClickListener.onStoryClicked(story.getId(), storyBinding.btnSaveToFavs));
         }
     }
 
@@ -89,10 +93,10 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
             return;
         }
         view.setVisibility(View.VISIBLE);
-        RequestOptions cropOptions = new RequestOptions().fitCenter();
+        RequestOptions options = new RequestOptions().fitCenter();
         Glide.with(view.getContext())
                 .load(imageUrl).apply(new RequestOptions())
-                .apply(cropOptions)
+                .apply(options)
                 .into(view);
     }
 }

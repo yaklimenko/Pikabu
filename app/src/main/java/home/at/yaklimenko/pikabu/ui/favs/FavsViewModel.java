@@ -71,7 +71,7 @@ public class FavsViewModel extends ViewModel {
         //everything is ok
         Log.d(TAG, "refreshStoryOnView: error set to null");
         errorTextRes.setValue(null);
-
     }
+
 
 }

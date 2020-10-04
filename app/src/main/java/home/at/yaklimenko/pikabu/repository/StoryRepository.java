@@ -87,11 +87,16 @@ public class StoryRepository {
             }
             Story story = hotStories.get(id);
             if (story == null) {
-                emitter.onError(new NullPointerException("cannot find story"));
+                emitter.onError(new NullPointerException("cannot find story id: " + id));
             }
             emitter.onSuccess(story);
         });
+    }
 
+    public Single<Story> getSingleStory (int id) {
+        return getStory(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 }

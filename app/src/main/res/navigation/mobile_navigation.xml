@@ -9,12 +9,39 @@
         android:id="@+id/navigation_home"
         android:name="home.at.yaklimenko.pikabu.ui.hot.HotFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_hot" />
+        tools:layout="@layout/fragment_hot">
+        <action
+            android:id="@+id/action_navigation_home_to_story"
+            app:destination="@id/story">
+            <argument
+                android:name="storyId"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </action>
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_favs"
         android:name="home.at.yaklimenko.pikabu.ui.favs.FavsFragment"
         android:label="@string/title_favs"
-        tools:layout="@layout/fragment_favs" />
+        tools:layout="@layout/fragment_favs">
+        <action
+            android:id="@+id/action_navigation_favs_to_story"
+            app:destination="@id/story">
+            <argument
+                android:name="storyId"
+                android:defaultValue="-1"
+                app:argType="integer" />
+        </action>
+    </fragment>
+
+    <fragment
+        android:id="@+id/story"
+        android:name="home.at.yaklimenko.pikabu.ui.story.StoryFragment">
+        <argument
+            android:name="storyId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>

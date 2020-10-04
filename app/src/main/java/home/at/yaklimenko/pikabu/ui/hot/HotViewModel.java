@@ -22,7 +22,6 @@ public class HotViewModel extends ViewModel {
     public ObservableField<Boolean> isLoading = new ObservableField<>();
 
     public HotViewModel(){
-        Log.d(TAG, "HotViewModel: constructor");
         init();
     }
 
