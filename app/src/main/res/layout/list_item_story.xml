@@ -69,7 +69,6 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
-                    android:text="@{story.isFav ? @string/btn_remove_from_favs : @string/btn_add_to_favs"
                     app:iconGravity="end">
 
                 </com.google.android.material.button.MaterialButton>

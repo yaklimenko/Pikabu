@@ -17,6 +17,7 @@ import com.google.android.material.card.MaterialCardView;
 import java.util.LinkedList;
 import java.util.List;
 
+import home.at.yaklimenko.pikabu.R;
 import home.at.yaklimenko.pikabu.databinding.ListItemStoryBinding;
 import home.at.yaklimenko.pikabu.entity.Story;
 
@@ -28,6 +29,7 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
     private OnStoryClickListener onStoryClickListener;
 
     public StoryListAdapter(OnStoryClickListener onStoryClickListener) {
+        Log.d(TAG, "StoryListAdapter: constructor");
         this.onStoryClickListener = onStoryClickListener;
     }
 
@@ -65,15 +67,6 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
             super(binding.getRoot());
             storyBinding = binding;
             this.onStoryClickListener = onStoryClickListener;
-            initCardHandler(binding);
-        }
-
-        private void initCardHandler(home.at.yaklimenko.pikabu.databinding.ListItemStoryBinding binding) {
-            MaterialCardView card = binding.storyItemCard;
-//            card.setOnLongClickListener(v -> {
-//                card.setChecked(!card.isChecked());
-//                return true;
-//            });
         }
 
         void savePosition(int position) {
@@ -82,12 +75,8 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
 
         void bind(Story story) {
             storyBinding.setStory(story);
-            storyBinding.btnSaveToFavs.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    onStoryClickListener.onStoryClicked(story.getId(), (int) itemView.getTag());
-                }
-            });
+            storyBinding.btnSaveToFavs.setText(story.isFav() ? R.string.btn_remove_from_favs : R.string.btn_add_to_favs);
+            storyBinding.btnSaveToFavs.setOnClickListener(v -> onStoryClickListener.onStoryClicked(story.getId(), storyBinding.btnSaveToFavs));
         }
     }
 
@@ -100,8 +89,10 @@ public class StoryListAdapter extends RecyclerView.Adapter<StoryListAdapter.View
             return;
         }
         view.setVisibility(View.VISIBLE);
+        RequestOptions cropOptions = new RequestOptions().fitCenter();
         Glide.with(view.getContext())
                 .load(imageUrl).apply(new RequestOptions())
+                .apply(cropOptions)
                 .into(view);
     }
 }

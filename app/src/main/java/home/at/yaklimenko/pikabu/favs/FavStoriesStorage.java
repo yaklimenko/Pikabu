@@ -1,6 +1,7 @@
 package home.at.yaklimenko.pikabu.favs;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -10,30 +11,28 @@ import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class FavStoriesStorage {
-    private final Set<Story> stories;
+    private final Set<Integer> stories;
 
     public FavStoriesStorage() {
-        stories = new HashSet<>();
+        stories = new LinkedHashSet<>();
     }
 
     public Completable saveStory(Story story) {
         return Completable.create(emitter -> {
-            stories.add(story);
+            stories.add(story.getId());
             emitter.onComplete();
         });
     }
 
     public Completable removeFromSavedStories(Story story) {
         return Completable.create(emitter -> {
-            stories.remove(story);
+            stories.remove(story.getId());
             emitter.onComplete();
         });
     }
 
-    public Single<List<Story>> loadFavsStories() {
-        return Single.create(emitter -> {
-            emitter.onSuccess(new LinkedList<>(stories));
-        });
+    public Single<List<Integer>> loadFavsStoriesIds() {
+        return Single.create(emitter -> emitter.onSuccess(new LinkedList<>(stories)));
     }
 
 }

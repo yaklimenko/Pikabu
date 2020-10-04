@@ -53,14 +53,24 @@
             android:textAppearance="?attr/textAppearanceBody1"
             android:visibility="@{viewModel.errorText == null ? View.GONE : View.VISIBLE}" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_reload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_error_text"
+            android:text="@string/btn_reload"
+            android:visibility="@{viewModel.errorText == null ? View.GONE : View.VISIBLE}"
+            android:onClick="@{(v) -> viewModel.init()}"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_stories"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.stories == null ? View.VISIBLE : View.GONE}"
-
             />
-
+<!-- android:visibility="@{viewModel.stories == null ? View.VISIBLE : View.GONE}" -->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

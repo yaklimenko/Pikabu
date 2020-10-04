@@ -1,6 +1,7 @@
 package home.at.yaklimenko.pikabu.repository;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -43,9 +44,12 @@ public class StoryRepository {
     }
 
     public Single<List<Story>> getFavStories() {
-        return favStoriesStorage.loadFavsStories()
-                .map(stories -> {
-                    mapStories(stories);
+        return favStoriesStorage.loadFavsStoriesIds()
+                .map(ids -> {
+                    List<Story> stories = new LinkedList<>();
+                    for (Integer id : ids) {
+                        stories.add(hotStories.get(id));
+                    }
                     return stories;
                 })
                 .subscribeOn(Schedulers.io())
@@ -59,23 +63,19 @@ public class StoryRepository {
         }
     }
 
-    public Completable switchStoryFavor(final int id) {
+    public Single<Boolean> switchStoryFavor(final int id) {
         return getStory(id)
                 .flatMap(story -> {
                     if (story.isFav()) {
                         story.setFav(false);
                         return favStoriesStorage.removeFromSavedStories(story)
-                                .andThen(Single.just(story));
+                                .andThen(Single.just(story.isFav()));
                     } else {
                         story.setFav(true);
                         return favStoriesStorage.saveStory(story)
-                                .andThen(Single.just(story));
+                                .andThen(Single.just(story.isFav()));
                     }
                 })
-                .flatMapCompletable(story -> Completable.create(emitter -> {
-                    story.setFav(!story.isFav());
-                    emitter.onComplete();
-                }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -5,4 +5,6 @@
     <string name="btn_add_to_favs">Add to Favs</string>
     <string name="btn_remove_from_favs">Remove from Favs</string>
     <string name="tv_error_title">Sorry, cannot load stories for now :(</string>
+    <string name="tv_no_stories_title">No stories</string>
+    <string name="btn_reload">Try reload</string>
 </resources>
