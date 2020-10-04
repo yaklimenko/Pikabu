@@ -8,7 +8,6 @@ import java.util.Map;
 import home.at.yaklimenko.pikabu.entity.Story;
 import home.at.yaklimenko.pikabu.favs.FavStoriesStorage;
 import home.at.yaklimenko.pikabu.http.PikabuApiBuilder;
-import io.reactivex.Completable;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -93,7 +92,7 @@ public class StoryRepository {
         });
     }
 
-    public Single<Story> getSingleStory (int id) {
+    public Single<Story> getSingleStory(int id) {
         return getStory(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

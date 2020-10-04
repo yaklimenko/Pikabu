@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager.widget.ViewPager;
 
@@ -54,20 +53,14 @@ public class StoryFragment extends Fragment {
             binding.tvTitle.setText(story.getTitle());
             binding.tvBody.setText(story.getBody());
 
-            ViewPager viewPager = binding.vpCarousel;
-            if (story.getImages() == null || story.getImages().isEmpty()) {
-                return;
+            if (story.getImages() != null && !story.getImages().isEmpty()) {
+                ViewPager viewPager = binding.vpCarousel;
+                viewPager.setAdapter(new StoriesViewPagerAdapter(getContext(), story.getImages()));
             }
-            viewPager.setAdapter(new StoriesViewPagerAdapter(getContext(), story.getImages()));
 
             binding.btnSaveToFavs.setText(story.isFav() ? R.string.btn_remove_from_favs : R.string.btn_add_to_favs);
-            binding.btnSaveToFavs.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    storyViewModel.switchStoryFavor(story.getId())
-                            .subscribe(isFavNow -> binding.btnSaveToFavs.setText(isFavNow ? R.string.btn_remove_from_favs : R.string.btn_add_to_favs));
-                }
-            });
+            binding.btnSaveToFavs.setOnClickListener(v -> storyViewModel.switchStoryFavor(story.getId())
+                    .subscribe(isFavNow -> binding.btnSaveToFavs.setText(isFavNow ? R.string.btn_remove_from_favs : R.string.btn_add_to_favs)));
         }
     }
 

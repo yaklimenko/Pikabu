@@ -6,12 +6,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.List;
@@ -47,10 +45,10 @@ public class StoriesViewPagerAdapter extends PagerAdapter {
         View itemView = inflater.inflate(R.layout.item_pager, container, false);
 
         Log.d(TAG, "load in gallery:" + images.get(position) + "#end");
-        final ImageView ivPhoto = (ImageView) itemView.findViewById(R.id.iv_photo);
+        final ImageView ivPhoto = itemView.findViewById(R.id.iv_photo);
 
         RequestOptions options = new RequestOptions().fitCenter();
-        if (!images.get(position).equals("")){
+        if (!images.get(position).equals("")) {
             Glide.with(context)
                     .load(images.get(position))
                     .error(Glide.with(context).load(R.drawable.ic_error_loading_image))

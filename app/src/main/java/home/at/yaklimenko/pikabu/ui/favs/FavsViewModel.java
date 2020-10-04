@@ -41,7 +41,7 @@ public class FavsViewModel extends ViewModel {
     }
 
     @StringRes
-    private int translateError (Throwable t) {
+    private int translateError(Throwable t) {
         /// some translation Code
         return R.string.tv_error_title;
     }

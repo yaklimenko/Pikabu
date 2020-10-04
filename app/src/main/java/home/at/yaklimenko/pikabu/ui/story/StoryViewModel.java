@@ -42,7 +42,7 @@ public class StoryViewModel extends ViewModel {
     }
 
     @StringRes
-    private int translateError (Throwable t) {
+    private int translateError(Throwable t) {
         /// some translation Code
         return R.string.tv_story_error_title;
     }

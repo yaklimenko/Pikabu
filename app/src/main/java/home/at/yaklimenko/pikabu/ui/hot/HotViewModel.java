@@ -11,7 +11,6 @@ import java.util.List;
 
 import home.at.yaklimenko.pikabu.entity.Story;
 import home.at.yaklimenko.pikabu.repository.StoryRepository;
-import io.reactivex.Completable;
 import io.reactivex.Single;
 
 public class HotViewModel extends ViewModel {
@@ -21,7 +20,7 @@ public class HotViewModel extends ViewModel {
     public ObservableField<String> errorText = new ObservableField<>();
     public ObservableField<Boolean> isLoading = new ObservableField<>();
 
-    public HotViewModel(){
+    public HotViewModel() {
         init();
     }
 
@@ -48,7 +47,7 @@ public class HotViewModel extends ViewModel {
     }
 
     public MutableLiveData<List<Story>> getStories() {
-        Log.d(TAG, "getStories: " + (stories.getValue() == null || stories.getValue().isEmpty() ? "empty" : "has data") );
+        Log.d(TAG, "getStories: " + (stories.getValue() == null || stories.getValue().isEmpty() ? "empty" : "has data"));
         return stories;
     }
 
